@@ -16,6 +16,13 @@ if (process.env.RTORRENT_SOCK === 'true' || process.env.RTORRENT_SOCK === true) 
   });
 }
 
+let envConfig
+try {
+  envConfig = JSON.parse(process.env.CONFIG);
+} catch (e) {
+  envConfig = {};
+}
+
 const CONFIG = {
   baseURI: process.env.WEBROOT || '/',
   dbCleanInterval: 1000 * 60 * 60,
@@ -28,7 +35,8 @@ const CONFIG = {
   torrentClientPollInterval: 1000 * 5,
   torrentClientPollIntervalIdle: 1000 * 60 * 15,
   secret: process.env.FLOOD_SECRET || 'supersecret30charactersminimum',
-  configUser: connectionSettings
+  configUser: connectionSettings,
+  ...envConfig
 };
 
 module.exports = CONFIG;
